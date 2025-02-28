@@ -1,6 +1,7 @@
 const alertDiv = document.getElementById("alert");
 const logsDiv = document.getElementById("logs");
 let lastLogId = null;
+let initialLoad = true; // Flag para identificar o carregamento inicial
 
 function fetchLogs() {
     fetch("https://seventec.up.railway.app/logsdata")
@@ -12,11 +13,14 @@ function fetchLogs() {
                 if (lastLogId !== latestLog._id) {
                     lastLogId = latestLog._id;
 
-                    if (latestLog.message == "Pisada detectada") {
-                        console.log("detect ok")
+                    if (latestLog.message === "Pisada detectada") {
                         alertDiv.textContent = "Pisada forte detectada!";
                         alertDiv.className = "alert warning";
-                        showNewLogAlert(); 
+
+                        // Exibe o aviso apenas se não for o carregamento inicial
+                        if (!initialLoad) {
+                            showNewLogAlert();
+                        }
                     } else {
                         alertDiv.textContent = "Nenhuma pisada forte detectada.";
                         alertDiv.className = "alert normal";
@@ -33,6 +37,11 @@ function fetchLogs() {
                         `;
                         logsDiv.appendChild(logElement);
                     });
+
+                    // Marca o fim do carregamento inicial
+                    if (initialLoad) {
+                        initialLoad = false;
+                    }
                 }
             } else {
                 logsDiv.innerHTML = "<p>Nenhum log encontrado.</p>";
@@ -52,7 +61,7 @@ function showNewLogAlert() {
 
     setTimeout(() => {
         newLogAlert.remove();
-    }, 3000); // Remove o aviso após 3 segundos
+    }, 3000);
 }
 
 setInterval(fetchLogs, 5000);
