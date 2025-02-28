@@ -1,29 +1,27 @@
 const alertDiv = document.getElementById("alert");
 const logsDiv = document.getElementById("logs");
-let lastLogId = null; // Armazena o ID do último log exibido
+let lastLogId = null; 
 
 function fetchLogs() {
     fetch("https://seventec.up.railway.app/logsdata")
         .then(response => response.json())
         .then(data => {
             if (data.success && data.logs && data.logs.length > 0) {
-                const latestLog = data.logs[0]; // Pega o log mais recente
+                const latestLog = data.logs[0];
 
                 // Verifica se é um novo log
                 if (lastLogId !== latestLog._id) {
-                    lastLogId = latestLog._id; // Atualiza o ID do último log
+                    lastLogId = latestLog._id;
 
-                    // Verifica se o log é uma pisada forte
                     if (latestLog.message === "Pisada%20detectada") {
                         alertDiv.textContent = "Pisada forte detectada!";
-                        alertDiv.className = "alert warning"; // Classe para alerta
+                        alertDiv.className = "alert warning"; 
                     } else {
                         alertDiv.textContent = "Nenhuma pisada forte detectada.";
-                        alertDiv.className = "alert normal"; // Classe para normal
+                        alertDiv.className = "alert normal"; 
                     }
 
-                    // Atualiza a lista de logs
-                    logsDiv.innerHTML = ""; // Limpa o conteúdo anterior
+                    logsDiv.innerHTML = ""; 
                     data.logs.forEach(log => {
                         const logElement = document.createElement("div");
                         logElement.className = "log-item";
