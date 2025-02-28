@@ -12,7 +12,7 @@ function fetchLogs() {
                 if (lastLogId !== latestLog._id) {
                     lastLogId = latestLog._id;
 
-                    if (latestLog.message == "Pisada%20detectada") {
+                    if (latestLog.message == "Pisada detectada") {
                         console.log("detect ok")
                         alertDiv.textContent = "Pisada forte detectada!";
                         alertDiv.className = "alert warning";
