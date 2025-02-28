@@ -65,3 +65,13 @@ app.get('/newlog',function(req,res) {
 			res.send({ success: false, reason: error })
 		})
 })
+
+app.get('/logsdata', async function(req, res) {
+    try {
+        const logs = await log.find().sort({ date: -1 });
+        res.json({ success: true, logs: logs });
+    } catch (error) {
+        console.error("Erro ao buscar logs:", error);
+        res.status(500).json({ success: false, reason: "Erro ao buscar logs" });
+    }
+});

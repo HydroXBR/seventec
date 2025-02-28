@@ -1,37 +1,56 @@
-let map, marker;
+const alertDiv = document.getElementById("alert");
+const logsDiv = document.getElementById("logs");
 
-        function initMap(lat, lng) {
-            const pos = { lat, lng };
-            map = new google.maps.Map(document.getElementById("map"), {
-                center: pos,
-                zoom: 16
-            });
-            marker = new google.maps.Marker({ position: pos, map: map });
-        }
+function checkForNewLogs() {
+    fetch("https://seventec.up.railway.app/newlog")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.message === "Pisada%20detectada") {
+                alertDiv.textContent = "Pisada forte detectada!";
+                alertDiv.className = "alert warning"; 
+            } else {
+                alertDiv.textContent = "Nenhuma pisada forte detectada.";
+                alertDiv.className = "alert normal"; 
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao consultar logs:", error);
+            alertDiv.textContent = "Erro ao carregar avisos.";
+            alertDiv.className = "alert warning"; 
+        });
+}
 
-        function updateMap(lat, lng) {
-            const pos = { lat, lng };
-            marker.setPosition(pos);
-            map.setCenter(pos);
-        }
+function fetchLogs() {
+    fetch("https://seventec.up.railway.app/logsdata")
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.logs) {
+                logsDiv.innerHTML = "";
 
-        function fetchGPSData() {
-            fetch("/gps") // Endpoint que retorna os dados do GPS
-                .then(response => response.json())
-                .then(data => {
-                    const lat = parseFloat(data.latitude);
-                    const lng = parseFloat(data.longitude);
-                    
-                    document.getElementById("latitude").textContent = lat;
-                    document.getElementById("longitude").textContent = lng;
+                data.logs.forEach(log => {
+                    const logElement = document.createElement("div");
+                    logElement.className = "log-item";
+                    logElement.innerHTML = `
+                        <p><strong>Data:</strong> ${new Date(log.date).toLocaleString()}</p>
+                        <p><strong>Mensagem:</strong> ${log.message}</p>
+                        <hr>
+                    `;
+                    logsDiv.appendChild(logElement);
+                });
+            } else {
+                logsDiv.innerHTML = "<p>Nenhum log encontrado.</p>";
+            }
+        })
+        .catch(error => {
+            console.error("Erro ao buscar logs:", error);
+            logsDiv.innerHTML = "<p>Erro ao carregar logs.</p>";
+        });
+}
 
-                    if (!map) {
-                        initMap(lat, lng);
-                    } else {
-                        updateMap(lat, lng);
-                    }
-                })
-                .catch(error => console.error("Erro ao buscar GPS:", error));
-        }
+setInterval(() => {
+    checkForNewLogs();
+    fetchLogs();
+}, 5000);
 
-        setInterval(fetchGPSData, 5000);
+checkForNewLogs();
+fetchLogs();

@@ -4,24 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
-    <title>Rastreamento GPS</title>
-    <script src="https://maps.googleapis.com/maps/api/js?key=SUA_CHAVE_GMAPS"></script>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; }
-        #map { height: 400px; width: 100%; margin-top: 20px; }
-        .info { margin-top: 10px; font-size: 18px; }
-    </style>
+    <title>SEVEN'TEC</title>
 </head>
 <body>
-
-    <h2>Localização do Tênis com GPS</h2>
-    <div class="info">
-        <p><b>Latitude:</b> <span id="latitude">Carregando...</span></p>
-        <p><b>Longitude:</b> <span id="longitude">Carregando...</span></p>
+    <div class="header">
+        <h1>SEVEN'TEC</h1>
+        <img src="https://ibb.co/3YYP2ZDJ" alt="Logo SEVEN'TEC">
     </div>
-    <div id="map"></div>
+    <div class="content">
+        <h2>Avisos</h2>
+        <div id="alert" class="alert normal">Nenhuma pisada forte detectada.</div>
+        <h2>Logs de Pisadas</h2>
+        <div id="logs" class="logs-container"></div>
+    </div>
 
     <script src="index.js"></script>
 </body>
 </html>
-
