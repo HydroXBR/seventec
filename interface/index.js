@@ -1,6 +1,6 @@
 const alertDiv = document.getElementById("alert");
 const logsDiv = document.getElementById("logs");
-let lastLogId = null; 
+let lastLogId = null;
 
 function fetchLogs() {
     fetch("https://seventec.up.railway.app/logsdata")
@@ -9,19 +9,19 @@ function fetchLogs() {
             if (data.success && data.logs && data.logs.length > 0) {
                 const latestLog = data.logs[0];
 
-                // Verifica se é um novo log
                 if (lastLogId !== latestLog._id) {
                     lastLogId = latestLog._id;
 
                     if (latestLog.message === "Pisada%20detectada") {
                         alertDiv.textContent = "Pisada forte detectada!";
-                        alertDiv.className = "alert warning"; 
+                        alertDiv.className = "alert warning";
+                        showNewLogAlert(); // Exibe o aviso de novo log
                     } else {
                         alertDiv.textContent = "Nenhuma pisada forte detectada.";
-                        alertDiv.className = "alert normal"; 
+                        alertDiv.className = "alert normal";
                     }
 
-                    logsDiv.innerHTML = ""; 
+                    logsDiv.innerHTML = "";
                     data.logs.forEach(log => {
                         const logElement = document.createElement("div");
                         logElement.className = "log-item";
@@ -43,8 +43,16 @@ function fetchLogs() {
         });
 }
 
-// Consulta os logs a cada 5 segundos
-setInterval(fetchLogs, 5000);
+function showNewLogAlert() {
+    const newLogAlert = document.createElement("div");
+    newLogAlert.className = "new-log-alert";
+    newLogAlert.textContent = "Novo log detectado!";
+    document.body.appendChild(newLogAlert);
 
-// Executa a função imediatamente ao carregar a página
+    setTimeout(() => {
+        newLogAlert.remove();
+    }, 3000); // Remove o aviso após 3 segundos
+}
+
+setInterval(fetchLogs, 5000);
 fetchLogs();
