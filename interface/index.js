@@ -63,7 +63,7 @@ function showNewLogAlert() {
         newLogAlert.remove();
         alertDiv.textContent = "Nenhuma pisada forte detectada.";
         alertDiv.className = "alert normal";
-    }, 3000);
+    }, 15000);
 }
 
 setInterval(fetchLogs, 5000);
