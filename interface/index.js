@@ -1,7 +1,7 @@
 const alertDiv = document.getElementById("alert");
 const logsDiv = document.getElementById("logs");
 let lastLogId = null;
-let initialLoad = true; // Flag para identificar o carregamento inicial
+let initialLoad = true;
 
 function fetchLogs() {
     fetch("https://seventec.up.railway.app/logsdata")
