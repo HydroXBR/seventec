@@ -14,11 +14,11 @@ function fetchLogs() {
                     lastLogId = latestLog._id;
 
                     if (latestLog.message === "Pisada detectada") {
-                        alertDiv.textContent = "Pisada forte detectada!";
-                        alertDiv.className = "alert warning";
 
                         // Exibe o aviso apenas se não for o carregamento inicial
                         if (!initialLoad) {
+                            alertDiv.textContent = "Pisada forte detectada!";
+                            alertDiv.className = "alert warning";
                             showNewLogAlert();
                         }
                     } else {
@@ -61,6 +61,8 @@ function showNewLogAlert() {
 
     setTimeout(() => {
         newLogAlert.remove();
+        alertDiv.textContent = "Nenhuma pisada forte detectada.";
+        alertDiv.className = "alert normal";
     }, 3000);
 }
 
