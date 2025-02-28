@@ -15,7 +15,7 @@ function fetchLogs() {
                     if (latestLog.message === "Pisada%20detectada") {
                         alertDiv.textContent = "Pisada forte detectada!";
                         alertDiv.className = "alert warning";
-                        showNewLogAlert(); // Exibe o aviso de novo log
+                        showNewLogAlert(); 
                     } else {
                         alertDiv.textContent = "Nenhuma pisada forte detectada.";
                         alertDiv.className = "alert normal";
