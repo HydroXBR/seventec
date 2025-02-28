@@ -11,6 +11,7 @@ const app = express()
 import bodyParser from "body-parser"
 const __dirname = dirname(fileURLToPath(import.meta.url))
 import Db from "mongodb"
+import log from "./database/log.js"
 import im from "./db_connect.js"
 const ec = txt => encodeURIComponent(txt)
 const dec = txt => decodeURIComponent(txt)
@@ -47,7 +48,20 @@ app.get('/',function(req,res) {
 	res.sendFile(__dirname + '/interface/index.html')
 })
 
-app.get('/#',function(req,res) {
-	console.log("Access PRINCIPAL: "+ new Date())
-	res.sendFile(__dirname + '/interface/index.html')
+app.get('/newlog',function(req,res) {
+	console.log("Access LOG: "+ new Date())
+	const id = req.query.id
+	const message = req.query.message
+
+	const novolog = new log({
+		date: new Date(),
+		message: message		
+	})
+
+	novolog.save().then(() => {
+		res.send({ success: true, reason: "success" })
+		}).catch(error => {
+			console.error("Erro", error)
+			res.send({ success: false, reason: error })
+		})
 })
